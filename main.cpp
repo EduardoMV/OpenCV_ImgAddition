@@ -77,6 +77,61 @@ void constantAdd(){
     waitKey(0);
 }
 
+void Degraded(){
+    Mat f = imread("../flower.jpg", IMREAD_GRAYSCALE);
+    Mat Deg(500,500, CV_8U, Scalar(0));
+
+    for(int j = 0; j < Deg.rows; j++){
+        for (int i = 0; i < Deg.cols; i++){
+            Deg.at<uchar>(j, i) = static_cast<uchar>(255 * (static_cast<float>(j) / Deg.rows));
+        }
+    }
+
+    Mat h(f.rows, f.cols, CV_8U, Scalar(0));
+
+    int srows = min(f.rows, Deg.rows);
+    int scols = min(f.cols, Deg.cols);
+
+
+    for(int row = 0; row < srows; row++){
+        for(int col = 0; col < scols; col++){
+            float blendingFactor = static_cast<float>(col) / scols;  // Calculate blending factor
+            h.at<uchar>(row, col) = static_cast<uchar>((1.0 - blendingFactor) * f.at<uchar>(row, col) + blendingFactor * Deg.at<uchar>(row, col));
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("Degraded.jpg", h);
+    waitKey(0);
+}
+
+void Degraded2(){
+    Mat f = imread("../flower.jpg", IMREAD_GRAYSCALE);
+
+    Mat h(f.rows, f.cols, CV_8U, Scalar(0));
+
+    for(int row = 0; row < f.rows; row++){
+        for(int col = 0; col < f.cols; col++){
+            int color = f.at<uchar>(row, col) + (255 * static_cast<float>(col) / f.cols);
+
+            if(color > 255){
+                h.at<uchar>(row,col) = (uchar)(255);
+            }
+            else{
+                h.at<uchar>(row,col) = (uchar)(color);
+            }
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("Gradient.jpg", h);
+    waitKey(0);
+    imshow("PhotoFrame2", f);
+    waitKey(0);
+}
+
 int main() {
-    constantAdd();
+    Degraded2();
 }
