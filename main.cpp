@@ -83,14 +83,14 @@ void Degraded(){
 
     for(int j = 0; j < Deg.rows; j++){
         for (int i = 0; i < Deg.cols; i++){
-            Deg.at<uchar>(j, i) = static_cast<uchar>(255 * (static_cast<float>(j) / Deg.rows));
+            Deg.at<uchar>(i, j) = static_cast<uchar>(255 * (static_cast<float>(j) / Deg.rows));
         }
     }
 
-    Mat h(f.rows, f.cols, CV_8U, Scalar(0));
-
     int srows = min(f.rows, Deg.rows);
     int scols = min(f.cols, Deg.cols);
+
+    Mat h(srows, scols, CV_8U, Scalar(0));
 
 
     for(int row = 0; row < srows; row++){
@@ -133,5 +133,5 @@ void Degraded2(){
 }
 
 int main() {
-    Degraded2();
+    Degraded();
 }
