@@ -132,6 +132,63 @@ void Degraded2(){
     waitKey(0);
 }
 
+void DegradedMixV(){
+    Mat f = imread("../Girl.png", IMREAD_GRAYSCALE);
+    Mat g = imread("../Birds.png", IMREAD_GRAYSCALE);
+
+    int srows = min(f.rows, g.rows);
+    int scols = min(f.cols, g.cols);
+
+    double Inc = 1.0/srows;
+    double w1 = 0.0;
+    double w2 = 1.0;
+
+    Mat h(srows, scols, CV_8U, Scalar(0));
+
+    for(int row = 0; row < srows; row++){
+            w1 = w1 + Inc;
+            w2 = w2 - Inc;
+        for(int col = 0; col < scols; col++){
+
+            h.at<uchar>(row,col) = (uchar)(((w1 * f.at<uchar>(row,col)) + (g.at<uchar>(row,col) * w2)));
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("DegradedMixV.jpg", h);
+    waitKey(0);
+}
+
+void DegradedMixH(){
+    Mat f = imread("../Girl.png", IMREAD_GRAYSCALE);
+    Mat g = imread("../Birds.png", IMREAD_GRAYSCALE);
+
+    int srows = min(f.rows, g.rows);
+    int scols = min(f.cols, g.cols);
+
+    double Inc = 1.0/scols;
+    double w1;
+    double w2;
+
+    Mat h(srows, scols, CV_8U, Scalar(0));
+
+    for(int row = 0; row < srows; row++){
+        w1 = 0;
+        w2 = 1;
+        for(int col = 0; col < scols; col++){
+            w1 = w1 + Inc;
+            w2 = w2 - Inc;
+            h.at<uchar>(row,col) = (uchar)(((w1 * f.at<uchar>(row,col)) + (g.at<uchar>(row,col) * w2)));
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("DegradedMixH.jpg", h);
+    waitKey(0);
+}
+
 int main() {
-    Degraded();
+    DegradedMixH();
 }
