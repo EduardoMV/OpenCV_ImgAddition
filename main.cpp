@@ -200,7 +200,9 @@ void ImageRest(){
 
     for(int row = 0; row < srows; row++){
         for(int col = 0; col < scols; col++){
+            //Realizamos la resta en enteros, lo que nos permite manejar valores negativos
             int color = static_cast<int>(f.at<uchar>(row, col)) - static_cast<int>(g.at<uchar>(row, col));
+            //Después truncamos el valor tomando el 0 como mínimo de asignación.
             h.at<uchar>(row, col) = static_cast<uchar>(max(0, color));
         }
     }
