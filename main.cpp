@@ -189,6 +189,45 @@ void DegradedMixH(){
     waitKey(0);
 }
 
+void ImageRest(){
+    Mat f = imread("../Girl.png", IMREAD_GRAYSCALE);
+    Mat g = imread("../Birds.png", IMREAD_GRAYSCALE);
+
+    int srows = min(f.rows, g.rows);
+    int scols = min(f.cols, g.cols);
+
+    Mat h(srows, scols, CV_8U, Scalar(0));
+
+    for(int row = 0; row < srows; row++){
+        for(int col = 0; col < scols; col++){
+            int color = static_cast<int>(f.at<uchar>(row, col)) - static_cast<int>(g.at<uchar>(row, col));
+            h.at<uchar>(row, col) = static_cast<uchar>(max(0, color));
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("ImageRest.jpg", h);
+    waitKey(0);
+}
+
+void ImageNegative(){
+    Mat f = imread("../Dog.jpg", IMREAD_GRAYSCALE);
+
+    Mat h(f.rows, f.cols, CV_8U, Scalar(0));
+
+    for(int row = 0; row < f.rows; row++){
+        for(int col = 0; col < f.cols; col++){
+            h.at<uchar>(row,col) = (uchar)(255 - f.at<uchar>(row,col));
+        }
+    }
+
+    namedWindow("PhotoFrame", WINDOW_NORMAL);
+    imshow("PhotoFrame", h);
+    imwrite("ImageNegative.jpg", h);
+    waitKey(0);
+}
+
 int main() {
-    DegradedMixH();
+    ImageNegative();
 }
